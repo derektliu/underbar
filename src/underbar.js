@@ -310,6 +310,19 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    var usedArgs = {};
+
+    return function() {
+      var args = _.reduce(arguments, function(sentence, word) {
+        return '' + sentence + word;
+      });
+
+      if (!usedArgs[args]) {
+        usedArgs[args] = func.apply(this, arguments);
+      }
+      return usedArgs[args];
+
+    };
   };
 
   // Delays a function for the given number of milliseconds, and then calls
